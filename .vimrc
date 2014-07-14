@@ -92,7 +92,7 @@ let g:SuperTabDefaultCompletionType = "context"
 
 " ===========NERDTREEE ===============
 autocmd VimEnter * NERDTree                         " open NerdTree
-"autocmd VimEnter * wincmd p                         " set cursor in window
+autocmd VimEnter * wincmd p                         " set cursor in window
 autocmd BufEnter * NERDTreeMirror                  " open NerdTree in every Tab  
 let NERDTreeShowBookmarks=1
 
@@ -121,6 +121,25 @@ let g:syntastic_json_checkers=['jsl', 'jsonlint']
 "let g:jedi#popup_on_dot = 1
 let g:jedi#popup_select_first = 1
 map <Leader>b Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
+
+
+" Quit whenever nerdtree is only one window left
+autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
+
+" Close all open buffers on entering a window if the only
+" buffer that's left is the NERDTree buffer
+function! s:CloseIfOnlyNerdTreeLeft()
+  if exists("t:NERDTreeBufName")
+      if bufwinnr(t:NERDTreeBufName) != -1
+            if winnr("$") == 1
+                    q
+            endif
+      endif
+   endif
+endfunction
+
+
+
 
 " Better navigating through omnicomplete option list
 " See http://stackoverflow.com/questions/2170023/how-to-map-keys-for-popup-menu-in-vim
