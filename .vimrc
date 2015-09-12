@@ -1,6 +1,38 @@
+set nocompatible
+filetype off
+
+" vundle script
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
+
+" all other plugins go here
+Plugin 'christoomey/vim-tmux-navigator' "easily switch between panes/buffers
+Plugin 'scrooloose/nerdtree' "Nerdtree for file navigation
+Plugin 'kien/ctrlp.vim'  "move between files with great speed
+Plugin 'rking/ag.vim'    "search code using ag 
+
+Plugin 'xolox/vim-misc' "needed for vim notes
+Plugin 'xolox/vim-notes' "taking notes in vim
+
+
+" python
+Plugin 'davidhalter/jedi-vim' " autocomplete using jedi
+Plugin 'ervandew/supertab' " supertab
+
+" Rails
+Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-bundler'
+
+
+call vundle#end()   
+
 
 " Pathogen script
-execute pathogen#infect()
+" execute pathogen#infect()
+
+" make OSX clipboard work in vim
+set clipboard=unnamed
 
 " Automatic reloading of .vimrc
 autocmd! bufwritepost .vimrc source %
@@ -11,6 +43,18 @@ set bs=2     " make backspace behave like normal again
 
 " Rebind <Leader> key
 let mapleader = ","
+
+" ctrlp config
+let g:ctrlp_map = '<leader>f'
+let g:ctrlp_max_height = 30
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_match_window_reversed = 0
+
+" map Silver Searcher
+map <leader>a :Ag!<space>
+
+" use silver searcher for ctrlp
+" let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 " easier moving of code blocks
 " Try to go into visual mode (v), thenselect several lines of code here and
@@ -28,7 +72,6 @@ au BufNewFile,BufRead *.html,*.htm,*.shtml,*.stm set ft=jinja
 
 " Enable syntax highlighting
 " You need to reload this file for the change to apply
-filetype off
 filetype plugin indent on
 syntax on
 
@@ -64,13 +107,18 @@ set incsearch
 set ignorecase
 set smartcase
 
+"resize buffers
+nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
 
 " Color settings
+set t_Co=256 "256 color support
 colorscheme hybrid
 "color scheme gruvbox
 "set bg=dark  "only for gruvbox
-hi Directory ctermfg=3 ctermbg=4 " change directory colors
+" hi Directory ctermfg=3 ctermbg=4 " change directory colors
 set guifont=Menlo\ Regular:h14"
+"set guifont=Inconsolata\ Regular:h14"
 "set guifont=PragmataPro\ Regular:h14"
 
 " Bind nohl
@@ -90,7 +138,14 @@ set noswapfile
 let g:SuperTabDefaultCompletionType = "context"
 "autocmd FileType python let g:SuperTabDefaultCompletionType = "<C-space>"
 
+"VIM-NOTES plugin
+:let g:notes_directories = ['~/Dropbox/Documents/Notes', '~/Documents/Notes']
+
+
 " ===========NERDTREEE ===============
+" toogle nerdtree
+nmap <leader>w :NERDTreeToggle<CR>
+
 autocmd VimEnter * NERDTree                         " open NerdTree
 autocmd VimEnter * wincmd p                         " set cursor in window
 autocmd BufEnter * NERDTreeMirror                  " open NerdTree in every Tab  
@@ -102,6 +157,10 @@ map <C-J> <C-W>j
 map <C-K> <C-W>k
 map <C-L> <C-W>l
 map <C-C> <C-W>c
+
+
+" set nerdtree size
+:let g:NERDTreeWinSize=20
 
 " Json Plugin
 let g:vim_json_syntax_conceal = 0  "consider double quotes
@@ -115,7 +174,6 @@ let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '!'
 "" set lints for syntastic
 let g:syntastic_json_checkers=['jsl', 'jsonlint']
-
 
 "let g:jedi#usages_command = "<leader>z"
 "let g:jedi#popup_on_dot = 1
@@ -138,6 +196,10 @@ function! s:CloseIfOnlyNerdTreeLeft()
    endif
 endfunction
 
+
+" Jedi new options 2015
+" disable annyoing preview window
+autocmd FileType python setlocal completeopt-=preview
 
 
 
